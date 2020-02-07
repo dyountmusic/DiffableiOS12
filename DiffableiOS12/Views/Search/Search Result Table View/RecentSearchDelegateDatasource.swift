@@ -10,9 +10,16 @@ import Foundation
 import UIKit
 
 class RecentSearchTableViewDelegate: NSObject, UITableViewDelegate {
+
+    weak var searchViewController: SearchViewController?
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        UIView()
+        guard let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "recentSearchFooterView") as? RecentSearchFooterView, !Coordinators.search.cachedRecentResults.isEmpty else { return UIView() }
+        footerView.delegate = searchViewController
+        return footerView
     }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat { 70 }
 }
 
 class RecentSearchTableViewDatasource: NSObject, UITableViewDataSource {

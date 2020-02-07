@@ -15,7 +15,10 @@ class QuickSearchTableViewDelegate: NSObject, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SearchResultTableViewCell, let model = cell.model else { return }
         Coordinators.search.cachedRecentResults.append(model)
-        searchViewController?.dismiss(animated: true)
+        searchViewController?.quickResultsTableView.isHidden = true
+        searchViewController?.searchBar.resignFirstResponder()
+        searchViewController?.updateUI()
+        searchViewController?.recentResultsTableView.isHidden = false
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

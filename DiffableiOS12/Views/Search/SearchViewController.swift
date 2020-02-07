@@ -14,13 +14,13 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var recentResultsTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
 
+    @IBOutlet weak var searchPromptLabel: UILabel!
+
     private var quickResultsTableViewDelegate = QuickSearchTableViewDelegate()
     private var quickResultsTableViewDatasource = QuickSearchTableViewDatasource()
 
     private var recentSearchTableViewDelegate = RecentSearchTableViewDelegate()
     private var recentSearchTableViewDatasource = RecentSearchTableViewDatasource()
-
-    var cachedResults = Coordinators.search.cachedRecentResults
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +31,7 @@ class SearchViewController: UIViewController {
     }
 
     func updateUI() {
+        recentSearchTableViewDatasource.recentSearchItems = Coordinators.search.cachedRecentResults
         quickResultsTableView.reloadData()
         recentResultsTableView.reloadData()
     }
@@ -46,11 +47,14 @@ extension SearchViewController: UISearchBarDelegate {
         updateUI()
         quickResultsTableView.isHidden = false
         recentResultsTableView.isHidden = true
+        searchPromptLabel.isHidden = true
     }
 
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         quickResultsTableView.isHidden = true
         recentResultsTableView.isHidden = false
+        searchPromptLabel.text = "Search for something..."
+        searchPromptLabel.isHidden = !Coordinators.search.cachedRecentResults.isEmpty
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -59,7 +63,12 @@ extension SearchViewController: UISearchBarDelegate {
             updateUI()
             return
         }
+        searchPromptLabel.isHidden = true
         let results = mockData.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+        if results.isEmpty {
+            searchPromptLabel.isHidden = false
+            searchPromptLabel.text = "No results :("
+        }
         quickResultsTableViewDatasource.quickSearchItems = results
         updateUI()
     }
@@ -70,21 +79,34 @@ extension SearchViewController {
         let nib = UINib(nibName: "SearchResultTableViewCell", bundle: nil)
         quickResultsTableView.register(nib, forCellReuseIdentifier: "searchResultCell")
         recentResultsTableView.register(nib, forCellReuseIdentifier: "searchResultCell")
+
+        let footerNib = UINib(nibName: "RecentSearchFooterView", bundle: nil)
+        recentResultsTableView.register(footerNib, forHeaderFooterViewReuseIdentifier: "recentSearchFooterView")
     }
 
     private func setupTableViews() {
         quickResultsTableView.delegate = quickResultsTableViewDelegate
         recentResultsTableView.delegate = recentSearchTableViewDelegate
-
-        quickResultsTableViewDatasource.quickSearchItems = cachedResults
+        recentSearchTableViewDelegate.searchViewController = self
+        quickResultsTableViewDelegate.searchViewController = self
 
         quickResultsTableView.dataSource = quickResultsTableViewDatasource
         recentResultsTableView.dataSource = recentSearchTableViewDatasource
     }
 
     private func setupInitialLayout() {
-        searchBar.becomeFirstResponder()
+        searchPromptLabel.isHidden = !Coordinators.search.cachedRecentResults.isEmpty
         quickResultsTableView.isHidden = true
         recentResultsTableView.isHidden = false
+        recentSearchTableViewDatasource.recentSearchItems = Coordinators.search.cachedRecentResults
+    }
+}
+
+extension SearchViewController: RecentSearchFooterDelegate {
+    func footerButtonPressed() {
+        Coordinators.search.cachedRecentResults.removeAll()
+        Coordinators.search.cachedRecentResults.removeAll()
+        updateUI()
+        searchPromptLabel.isHidden = false
     }
 }

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16085" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6h-Yl-sfR">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16078.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -73,15 +74,24 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="750"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                     </tableView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search for something..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rXa-UA-ada">
+                                        <rect key="frame" x="0.0" y="20" width="414" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="rXa-UA-ada" secondAttribute="trailing" id="6Je-La-pLJ"/>
+                                    <constraint firstItem="rXa-UA-ada" firstAttribute="top" secondItem="XQa-sK-zgR" secondAttribute="top" constant="20" id="Bb9-zZ-cnv"/>
                                     <constraint firstItem="v6O-MV-tjR" firstAttribute="top" secondItem="XQa-sK-zgR" secondAttribute="top" id="FeF-kF-9NJ"/>
                                     <constraint firstItem="v6O-MV-tjR" firstAttribute="leading" secondItem="XQa-sK-zgR" secondAttribute="leading" id="N67-tO-xlD"/>
                                     <constraint firstAttribute="bottom" secondItem="GR8-bW-7Pb" secondAttribute="bottom" id="NUE-og-0sc"/>
                                     <constraint firstItem="GR8-bW-7Pb" firstAttribute="top" secondItem="XQa-sK-zgR" secondAttribute="top" id="P8S-gE-h3v"/>
                                     <constraint firstItem="GR8-bW-7Pb" firstAttribute="leading" secondItem="XQa-sK-zgR" secondAttribute="leading" id="VCc-PX-wjr"/>
                                     <constraint firstAttribute="trailing" secondItem="v6O-MV-tjR" secondAttribute="trailing" id="ivR-LJ-Tug"/>
+                                    <constraint firstItem="rXa-UA-ada" firstAttribute="leading" secondItem="XQa-sK-zgR" secondAttribute="leading" id="mfB-sr-Ys0"/>
                                     <constraint firstAttribute="trailing" secondItem="GR8-bW-7Pb" secondAttribute="trailing" id="qOl-Q1-iTH"/>
                                     <constraint firstAttribute="bottom" secondItem="v6O-MV-tjR" secondAttribute="bottom" id="rJP-if-BNc"/>
                                 </constraints>
@@ -117,6 +127,7 @@
                         <outlet property="quickResultsTableView" destination="GR8-bW-7Pb" id="84z-k9-KOH"/>
                         <outlet property="recentResultsTableView" destination="v6O-MV-tjR" id="ceo-oM-gAO"/>
                         <outlet property="searchBar" destination="9aQ-7j-FVj" id="NVB-GA-jZw"/>
+                        <outlet property="searchPromptLabel" destination="rXa-UA-ada" id="rBQ-KU-kha"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kbD-EK-32y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

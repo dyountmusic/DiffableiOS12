@@ -22,7 +22,6 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
             <constraints>
                 <constraint firstItem="O21-ns-GmV" firstAttribute="trailing" secondItem="i2h-RN-9CI" secondAttribute="trailing" constant="20" id="0Nm-z4-7Gh"/>
                 <constraint firstItem="i2h-RN-9CI" firstAttribute="centerY" secondItem="aRh-Dr-ggw" secondAttribute="centerY" id="ANZ-p6-1b4"/>

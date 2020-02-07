@@ -10,11 +10,14 @@ import Foundation
 import UIKit
 
 class QuickSearchTableViewDelegate: NSObject, UITableViewDelegate {
+    
     weak var searchViewController: SearchViewController?
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? SearchResultTableViewCell, let model = cell.model else { return }
-        Coordinators.search.cachedRecentResults.append(model)
+        if !Coordinators.search.cachedRecentResults.contains(model) {
+            Coordinators.search.cachedRecentResults.append(model)
+        }
         searchViewController?.quickResultsTableView.isHidden = true
         searchViewController?.searchBar.resignFirstResponder()
         searchViewController?.updateUI()

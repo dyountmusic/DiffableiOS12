@@ -8,22 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		EA99748823ED543700BADD11 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA99748723ED543700BADD11 /* AppDelegate.swift */; };
-		EA99748A23ED543700BADD11 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA99748923ED543700BADD11 /* SceneDelegate.swift */; };
-		EA99748C23ED543700BADD11 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA99748B23ED543700BADD11 /* ViewController.swift */; };
+		EA99748C23ED543700BADD11 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA99748B23ED543700BADD11 /* MainViewController.swift */; };
 		EA99748F23ED543700BADD11 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA99748D23ED543700BADD11 /* Main.storyboard */; };
 		EA99749123ED543900BADD11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA99749023ED543900BADD11 /* Assets.xcassets */; };
 		EA99749423ED543900BADD11 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA99749223ED543900BADD11 /* LaunchScreen.storyboard */; };
+		EA99749C23ED566B00BADD11 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA99749B23ED566B00BADD11 /* SearchViewController.swift */; };
+		EA99749F23ED5A9700BADD11 /* mockSearchResults.json in Resources */ = {isa = PBXBuildFile; fileRef = EA99749E23ED5A9700BADD11 /* mockSearchResults.json */; };
+		EA9974A123ED5ABD00BADD11 /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9974A023ED5ABD00BADD11 /* Employee.swift */; };
+		EA9974A323ED5B5800BADD11 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9974A223ED5B5800BADD11 /* Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		EA99748423ED543700BADD11 /* DiffableiOS12.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiffableiOS12.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA99748723ED543700BADD11 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EA99748923ED543700BADD11 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		EA99748B23ED543700BADD11 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EA99748B23ED543700BADD11 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		EA99748E23ED543700BADD11 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA99749023ED543900BADD11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA99749323ED543900BADD11 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EA99749523ED543900BADD11 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA99749B23ED566B00BADD11 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		EA99749E23ED5A9700BADD11 /* mockSearchResults.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mockSearchResults.json; sourceTree = "<group>"; };
+		EA9974A023ED5ABD00BADD11 /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
+		EA9974A223ED5B5800BADD11 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,14 +63,25 @@
 			isa = PBXGroup;
 			children = (
 				EA99748723ED543700BADD11 /* AppDelegate.swift */,
-				EA99748923ED543700BADD11 /* SceneDelegate.swift */,
-				EA99748B23ED543700BADD11 /* ViewController.swift */,
+				EA99748B23ED543700BADD11 /* MainViewController.swift */,
+				EA99749B23ED566B00BADD11 /* SearchViewController.swift */,
+				EA99749D23ED5A7300BADD11 /* Models */,
 				EA99748D23ED543700BADD11 /* Main.storyboard */,
 				EA99749023ED543900BADD11 /* Assets.xcassets */,
 				EA99749223ED543900BADD11 /* LaunchScreen.storyboard */,
 				EA99749523ED543900BADD11 /* Info.plist */,
 			);
 			path = DiffableiOS12;
+			sourceTree = "<group>";
+		};
+		EA99749D23ED5A7300BADD11 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EA99749E23ED5A9700BADD11 /* mockSearchResults.json */,
+				EA9974A023ED5ABD00BADD11 /* Employee.swift */,
+				EA9974A223ED5B5800BADD11 /* Data.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +142,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA99749F23ED5A9700BADD11 /* mockSearchResults.json in Resources */,
 				EA99749423ED543900BADD11 /* LaunchScreen.storyboard in Resources */,
 				EA99749123ED543900BADD11 /* Assets.xcassets in Resources */,
 				EA99748F23ED543700BADD11 /* Main.storyboard in Resources */,
@@ -138,9 +156,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA99748C23ED543700BADD11 /* ViewController.swift in Sources */,
+				EA99749C23ED566B00BADD11 /* SearchViewController.swift in Sources */,
+				EA9974A323ED5B5800BADD11 /* Data.swift in Sources */,
+				EA9974A123ED5ABD00BADD11 /* Employee.swift in Sources */,
+				EA99748C23ED543700BADD11 /* MainViewController.swift in Sources */,
 				EA99748823ED543700BADD11 /* AppDelegate.swift in Sources */,
-				EA99748A23ED543700BADD11 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +307,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 93KKH99Z5P;
 				INFOPLIST_FILE = DiffableiOS12/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -305,6 +326,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 93KKH99Z5P;
 				INFOPLIST_FILE = DiffableiOS12/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

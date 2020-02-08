@@ -39,10 +39,6 @@ class SearchViewController: UIViewController {
         loadRecents()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-
     func updateUI() {
         if #available(iOS 13, *) {
             quickResultsTableView.reloadData()

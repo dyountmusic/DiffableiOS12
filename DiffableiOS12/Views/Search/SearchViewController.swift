@@ -22,13 +22,13 @@ class SearchViewController: UIViewController {
     private var recentSearchTableViewDelegate = RecentSearchTableViewDelegate()
     private var recentSearchTableViewDatasource = RecentSearchTableViewDatasource()
 
-    private var recentSearchDiffableDatasource: Any? {
+    private lazy var recentSearchDiffableDatasource: Any? = {
         if #available(iOS 13, *) {
             return makeRecentSearchDatasource()
         } else {
             return nil
         }
-    }
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,11 +39,11 @@ class SearchViewController: UIViewController {
     }
 
     func updateUI() {
-        recentSearchTableViewDatasource.recentSearchItems = Coordinators.search.cachedRecentResults
         if #available(iOS 13, *) {
             quickResultsTableView.reloadData()
             updateRecentSearchData()
         } else {
+            recentSearchTableViewDatasource.recentSearchItems = Coordinators.search.cachedRecentResults
             quickResultsTableView.reloadData()
             recentResultsTableView.reloadData()
         }
@@ -81,6 +81,16 @@ extension SearchViewController {
         if let diffable = recentSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
             diffable.apply(snapshot, animatingDifferences: true)
         }
+    }
+
+    @available(iOS 13, *)
+    private func clearRecentSearchData() {
+        var snapshot = NSDiffableDataSourceSnapshot<RecentSearchSection, Employee>()
+        snapshot.deleteAllItems()
+        if let diffable = recentSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
+            diffable.apply(snapshot, animatingDifferences: true)
+        }
+        recentResultsTableView.isHidden = true
     }
 
 }
@@ -155,8 +165,18 @@ extension SearchViewController {
     private func setupInitialLayout() {
         searchPromptLabel.isHidden = !Coordinators.search.cachedRecentResults.isEmpty
         quickResultsTableView.isHidden = true
-        recentResultsTableView.isHidden = false
-        recentSearchTableViewDatasource.recentSearchItems = Coordinators.search.cachedRecentResults
+        recentResultsTableView.isHidden = Coordinators.search.cachedRecentResults.isEmpty
+        if #available(iOS 13.0, *) {
+            guard !Coordinators.search.cachedRecentResults.isEmpty else { return }
+            if let diffable = recentSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
+                var snapshot = NSDiffableDataSourceSnapshot<RecentSearchSection, Employee>()
+                snapshot.appendSections([.main])
+                snapshot.appendItems(Coordinators.search.cachedRecentResults, toSection: .main)
+                diffable.apply(snapshot, animatingDifferences: true)
+            }
+        } else {
+            recentSearchTableViewDatasource.recentSearchItems = Coordinators.search.cachedRecentResults
+        }
     }
 }
 
@@ -164,8 +184,11 @@ extension SearchViewController {
 extension SearchViewController: RecentSearchFooterDelegate {
     func footerButtonPressed() {
         Coordinators.search.cachedRecentResults.removeAll()
-        Coordinators.search.cachedRecentResults.removeAll()
-        updateUI()
+        if #available(iOS 13, *) {
+            clearRecentSearchData()
+        } else {
+            updateUI()
+        }
         searchPromptLabel.isHidden = false
     }
 }

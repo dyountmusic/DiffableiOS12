@@ -36,6 +36,11 @@ class SearchViewController: UIViewController {
         setupTableViews()
         searchBar.delegate = self
         setupInitialLayout()
+        loadRecents()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
 
     func updateUI() {
@@ -87,6 +92,7 @@ extension SearchViewController {
     private func clearRecentSearchData() {
         var snapshot = NSDiffableDataSourceSnapshot<RecentSearchSection, Employee>()
         snapshot.deleteAllItems()
+        snapshot.deleteSections([.main])
         if let diffable = recentSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
             diffable.apply(snapshot, animatingDifferences: true)
         }
@@ -116,6 +122,8 @@ extension SearchViewController: UISearchBarDelegate {
         guard !searchText.isEmpty else {
             quickResultsTableViewDatasource.quickSearchItems = mockData
             updateUI()
+            recentResultsTableView.isHidden = true
+            searchPromptLabel.isHidden = true
             return
         }
         searchPromptLabel.isHidden = true
@@ -166,8 +174,11 @@ extension SearchViewController {
         searchPromptLabel.isHidden = !Coordinators.search.cachedRecentResults.isEmpty
         quickResultsTableView.isHidden = true
         recentResultsTableView.isHidden = Coordinators.search.cachedRecentResults.isEmpty
+    }
+
+    private func loadRecents() {
+        guard !Coordinators.search.cachedRecentResults.isEmpty else { return }
         if #available(iOS 13.0, *) {
-            guard !Coordinators.search.cachedRecentResults.isEmpty else { return }
             if let diffable = recentSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
                 var snapshot = NSDiffableDataSourceSnapshot<RecentSearchSection, Employee>()
                 snapshot.appendSections([.main])

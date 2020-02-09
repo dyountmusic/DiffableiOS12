@@ -20,9 +20,10 @@ class QuickSearchTableViewDelegate: NSObject, UITableViewDelegate {
         }
         searchViewController?.quickResultsTableView.isHidden = true
         searchViewController?.searchBar.resignFirstResponder()
-        tableView.deselectRow(at: indexPath, animated: false)
         searchViewController?.updateUI()
         searchViewController?.recentResultsTableView.isHidden = false
+
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

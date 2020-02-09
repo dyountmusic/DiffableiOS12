@@ -30,6 +30,14 @@ class SearchViewController: UIViewController {
         }
     }()
 
+    private lazy var quickSearchDiffableDatasource: Any? = {
+        if #available(iOS 13, *) {
+            return makeQuickSearchDatasource()
+        } else {
+            return nil
+        }
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         registerComponents()
@@ -41,8 +49,8 @@ class SearchViewController: UIViewController {
 
     func updateUI() {
         if #available(iOS 13, *) {
-            quickResultsTableView.reloadData()
             updateRecentSearchData()
+            updateQuickSearchData()
         } else {
             recentSearchTableViewDatasource.recentSearchItems = Coordinators.search.cachedRecentResults
             quickResultsTableView.reloadData()
@@ -59,12 +67,23 @@ class SearchViewController: UIViewController {
 extension SearchViewController {
 
     enum RecentSearchSection {
-        case main, sub
+        case main
     }
 
     @available(iOS 13, *)
     private func makeRecentSearchDatasource() -> UITableViewDiffableDataSource<RecentSearchSection, Employee> {
         return UITableViewDiffableDataSource(tableView: recentResultsTableView) { tableView, indexPath, result in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell") as? SearchResultTableViewCell else { return UITableViewCell() }
+            cell.categoryLabel.text = result.salary
+            cell.titleLabel.text = result.name
+            cell.model = result
+            return cell
+        }
+    }
+
+    @available(iOS 13, *)
+    private func makeQuickSearchDatasource() -> UITableViewDiffableDataSource<RecentSearchSection, Employee> {
+        return UITableViewDiffableDataSource(tableView: quickResultsTableView) { tableView, indexPath, result in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell") as? SearchResultTableViewCell else { return UITableViewCell() }
             cell.categoryLabel.text = result.salary
             cell.titleLabel.text = result.name
@@ -85,14 +104,27 @@ extension SearchViewController {
     }
 
     @available(iOS 13, *)
+    private func updateQuickSearchData() {
+        var snapshot = NSDiffableDataSourceSnapshot<RecentSearchSection, Employee>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(mockData, toSection: .main)
+        if let diffable = quickSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
+            diffable.apply(snapshot, animatingDifferences: true)
+        }
+    }
+
+    @available(iOS 13, *)
     private func clearRecentSearchData() {
         var snapshot = NSDiffableDataSourceSnapshot<RecentSearchSection, Employee>()
         snapshot.deleteAllItems()
         snapshot.deleteSections([.main])
+        recentResultsTableView.tableFooterView = UIView()
         if let diffable = recentSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
-            diffable.apply(snapshot, animatingDifferences: true)
+            diffable.apply(snapshot, animatingDifferences: true) {
+                self.recentResultsTableView.isHidden = true
+                self.searchPromptLabel.isHidden = false
+            }
         }
-        recentResultsTableView.isHidden = true
     }
 
 }
@@ -152,8 +184,8 @@ extension SearchViewController {
         quickResultsTableViewDelegate.searchViewController = self
 
         if #available(iOS 13, *) {
-            if let recentDiffable = recentSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
-                quickResultsTableView.dataSource = quickResultsTableViewDatasource
+            if let recentDiffable = recentSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee>, let quickDiffable = quickSearchDiffableDatasource as? UITableViewDiffableDataSource<RecentSearchSection, Employee> {
+                quickResultsTableView.dataSource = quickDiffable
                 recentResultsTableView.dataSource = recentDiffable
             } else {
                 quickResultsTableView.dataSource = quickResultsTableViewDatasource
@@ -195,7 +227,7 @@ extension SearchViewController: RecentSearchFooterDelegate {
             clearRecentSearchData()
         } else {
             updateUI()
+            searchPromptLabel.isHidden = false
         }
-        searchPromptLabel.isHidden = false
     }
 }

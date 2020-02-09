@@ -20,6 +20,7 @@ class QuickSearchTableViewDelegate: NSObject, UITableViewDelegate {
         }
         searchViewController?.quickResultsTableView.isHidden = true
         searchViewController?.searchBar.resignFirstResponder()
+        tableView.deselectRow(at: indexPath, animated: false)
         searchViewController?.updateUI()
         searchViewController?.recentResultsTableView.isHidden = false
     }

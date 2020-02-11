@@ -9,6 +9,40 @@
 import Foundation
 import UIKit
 
+class QuickSearchDataSourceAdapter {
+    weak var delgate: SearchViewController?
+    
+    var dataSource = QuickSearchTableViewDatasource()
+    
+    @available(iOS 13.0, *)
+    lazy var quickSearchDiffableDatasource: UITableViewDiffableDataSource<SearchSection, Employee> = makeQuickSearchDatasource()
+    
+    @available(iOS 13, *)
+    private func makeQuickSearchDatasource() -> UITableViewDiffableDataSource<SearchSection, Employee> {
+        guard let tableView = delgate?.quickResultsTableView else {
+            fatalError("Missing delegate for RecentSearchDataSourceAdapter.")
+        }
+        return UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, result in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell") as? SearchResultTableViewCell else { return UITableViewCell() }
+            cell.categoryLabel.text = result.salary
+            cell.titleLabel.text = result.name
+            cell.model = result
+            return cell
+        }
+    }
+    
+    func updateQuickSearchData(results: [Employee]) {
+        if #available(iOS 13, *) {
+            var snapshot = NSDiffableDataSourceSnapshot<SearchSection, Employee>()
+            snapshot.appendSections([.main])
+            snapshot.appendItems(results, toSection: .main)
+            quickSearchDiffableDatasource.apply(snapshot, animatingDifferences: true)
+        } else {
+            dataSource.quickSearchItems = results
+        }
+    }
+}
+
 class QuickSearchTableViewDelegate: NSObject, UITableViewDelegate {
     
     weak var searchViewController: SearchViewController?
